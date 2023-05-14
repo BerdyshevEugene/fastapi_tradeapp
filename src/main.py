@@ -5,7 +5,7 @@ from typing import List, Optional
 from fastapi_users import fastapi_users, FastAPIUsers
 from pydantic import BaseModel, Field
 
-from fastapi import FastAPI, Request, status
+from fastapi import FastAPI, Request, status, Depends
 from fastapi.encoders import jsonable_encoder
 from fastapi.exceptions import ValidationError
 
@@ -39,6 +39,17 @@ app.include_router(
     tags=["auth"],
 )
 
+current_user = fastapi_users.current_user()
+
+
+@app.get("/protected-route")
+def protected_route(user: User = Depends(current_user)):
+    return f'Hello, {user.email}'
+
+
+@app.get("/unprotected-route")
+def unprotected_route():
+    return f'Hello, unknown'
 
 # создаем точку входа для пользователей, для получения данных
 # @app.get('/users/{user_id}', response_model=List[User])
