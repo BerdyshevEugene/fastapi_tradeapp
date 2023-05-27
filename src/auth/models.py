@@ -4,7 +4,7 @@ from fastapi_users.db import SQLAlchemyBaseUserTable
 from sqlalchemy import (Table, Column, Integer, String, TIMESTAMP, ForeignKey,
                         JSON, Boolean, MetaData)
 
-from src.database import Base
+from database import Base
 
 metadata = MetaData()
 
@@ -16,6 +16,12 @@ role = Table(
     Column('permissions', JSON),
 )
 
+
+'''
+в SQLAlchemy есть два метода записи: императивный (через Table)
+и декларативный (через Class). В библиотеке fastapi_users используется
+декларативный подход.
+'''
 user = Table(
     'user',
     metadata,
